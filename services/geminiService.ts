@@ -1,10 +1,3 @@
-import { GoogleGenAI } from "@google/genai";
-
-const apiKey = process.env.API_KEY || '';
-
-// Initialize the client once
-const ai = new GoogleGenAI({ apiKey });
-
 // System prompts for specific tools
 const DECODER_SYSTEM_INSTRUCTION = `You are a friendly, professional insurance expert at Vitannis. 
 Your goal is to explain complex insurance terms or policy text in simple, plain English suitable for a non-expert. 
@@ -24,49 +17,41 @@ Tone: Professional, Fiduciary, Strategic.
 Format: Use bullet points. Keep it under 200 words. Always include a disclaimer that this is for educational purposes.`;
 
 /**
+ * Calls the local Netlify Serverless Function instead of Google directly
+ */
+async function callGemini(prompt: string, systemInstruction: string = ""): Promise<string> {
+  const url = `/.netlify/functions/gemini`;
+  
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, systemInstruction })
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Server Error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.result || "I apologize, but I couldn't generate a response at this time.";
+  } catch (error) {
+    console.error("Local API Error:", error);
+    return "I apologize, but we are experiencing high traffic. Please try again in a moment.";
+  }
+}
+
+/**
  * Generates a response for the Policy Decoder tool
  */
 export const decodePolicy = async (text: string): Promise<string> => {
-  if (!apiKey) throw new Error("API Key is missing");
-
-  try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
-      contents: text,
-      config: {
-        systemInstruction: DECODER_SYSTEM_INSTRUCTION,
-        temperature: 0.7,
-      },
-    });
-    
-    return response.text || "Unable to decode this policy text at the moment.";
-  } catch (error) {
-    console.error("Gemini Decoder Error:", error);
-    throw new Error("Failed to process the policy text.");
-  }
+  return callGemini(text, DECODER_SYSTEM_INSTRUCTION);
 };
 
 /**
  * Generates a response for the Strategic Assessment tool
  */
 export const generateAssessment = async (userType: string, situation: string): Promise<string> => {
-  if (!apiKey) throw new Error("API Key is missing");
-
   const prompt = `User Type: ${userType}. User Situation: ${situation}`;
-
-  try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
-      contents: prompt,
-      config: {
-        systemInstruction: ASSESSMENT_SYSTEM_INSTRUCTION,
-        temperature: 0.7, // Slightly creative for strategy
-      },
-    });
-
-    return response.text || "Unable to generate assessment at the moment.";
-  } catch (error) {
-    console.error("Gemini Assessment Error:", error);
-    throw new Error("Failed to generate strategic assessment.");
-  }
+  return callGemini(prompt, ASSESSMENT_SYSTEM_INSTRUCTION);
 };

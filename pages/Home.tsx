@@ -36,19 +36,21 @@ const Home: React.FC<HomeProps> = ({ navigateTo }) => {
       {/* Services Section */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-20">
+          <div className="text-center mb-20 max-w-2xl mx-auto">
             <h2 className="font-serif text-3xl md:text-4xl text-brand-teal font-bold mb-4">Tailored Solutions</h2>
-            <div className="h-1 w-20 bg-brand-gold mx-auto rounded-full"></div>
+            <div className="h-1 w-20 bg-brand-gold mx-auto rounded-full mb-6"></div>
+            <p className="text-gray-600 font-light">
+              We provide specialized expertise for every stage of your financial journey, ensuring your legacy and assets are protected with fiduciary care.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-7xl mx-auto">
             <FeatureCard 
               title="Business Owners"
               description="Strategic retirement plans and tax-deductible solutions designed to maximize wealth retention."
               icon={<Briefcase className="w-7 h-7" />}
               onClick={() => navigateTo(Page.BUSINESS)}
             />
-            FeatureCard 
             <FeatureCard 
               title="Individuals & Families"
               description="Comprehensive market shopping for Long Term Care, Life, and Disability insurance."
