@@ -6,6 +6,7 @@ export enum Page {
   TOOLS = 'tools',
   ABOUT = 'about',
   CONTACT = 'contact',
+  IMMEDIATE_CARE = 'immediate-care',
 }
 
 export interface NavItem {

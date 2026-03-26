@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown, Sparkles, MapPin, Phone, Mail, Linkedin } from 'lucide-react';
+import { useNavigate, Routes, Route, useLocation } from 'react-router-dom';
 import { Page } from './types';
 
 // Page Imports
@@ -10,11 +11,29 @@ import Partners from './pages/Partners';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Tools from './pages/Tools';
+import ImmediateCare from './pages/ImmediateCare';
 
 const App: React.FC = () => {
-  const [activePage, setActivePage] = useState<Page>(Page.HOME);
+  const navigate = useNavigate();
+  const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  // Map paths to Page enum for styling
+  const getActivePage = (): Page => {
+    const path = location.pathname;
+    if (path === '/') return Page.HOME;
+    if (path === '/business') return Page.BUSINESS;
+    if (path === '/individuals') return Page.INDIVIDUALS;
+    if (path === '/partners') return Page.PARTNERS;
+    if (path === '/about') return Page.ABOUT;
+    if (path === '/contact') return Page.CONTACT;
+    if (path === '/insights') return Page.TOOLS;
+    if (path === '/immediate-care') return Page.IMMEDIATE_CARE;
+    return Page.HOME;
+  };
+
+  const activePage = getActivePage();
 
   // Handle scroll for sticky header styling
   useEffect(() => {
@@ -26,22 +45,20 @@ const App: React.FC = () => {
   }, []);
 
   const navigateTo = (page: Page) => {
-    setActivePage(page);
+    let path = '/';
+    switch (page) {
+      case Page.HOME: path = '/'; break;
+      case Page.BUSINESS: path = '/business'; break;
+      case Page.INDIVIDUALS: path = '/individuals'; break;
+      case Page.PARTNERS: path = '/partners'; break;
+      case Page.ABOUT: path = '/about'; break;
+      case Page.CONTACT: path = '/contact'; break;
+      case Page.TOOLS: path = '/insights'; break;
+      case Page.IMMEDIATE_CARE: path = '/immediate-care'; break;
+    }
+    navigate(path);
     setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const renderPage = () => {
-    switch (activePage) {
-      case Page.HOME: return <Home navigateTo={navigateTo} />;
-      case Page.BUSINESS: return <Business navigateTo={navigateTo} />;
-      case Page.INDIVIDUALS: return <Individuals navigateTo={navigateTo} />;
-      case Page.PARTNERS: return <Partners navigateTo={navigateTo} />;
-      case Page.ABOUT: return <About navigateTo={navigateTo} />;
-      case Page.CONTACT: return <Contact />;
-      case Page.TOOLS: return <Tools />;
-      default: return <Home navigateTo={navigateTo} />;
-    }
   };
 
   return (
@@ -51,7 +68,7 @@ const App: React.FC = () => {
       <header className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-brand-teal shadow-xl py-2' : 'bg-brand-teal py-4'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
           {/* Logo */}
-          <a href="#" onClick={(e) => { e.preventDefault(); navigateTo(Page.HOME); }} className="block hover:opacity-90 transition transform hover:scale-105 duration-300 origin-left">
+          <a href="/" onClick={(e) => { e.preventDefault(); navigateTo(Page.HOME); }} className="block hover:opacity-90 transition transform hover:scale-105 duration-300 origin-left">
              {/* Using a text placeholder for logo if image fails, but keeping image logic */}
              <div className="flex items-center gap-3">
                 <img 
@@ -67,13 +84,14 @@ const App: React.FC = () => {
             <button onClick={() => navigateTo(Page.HOME)} className={`text-sm font-medium transition uppercase tracking-wide ${activePage === Page.HOME ? 'text-brand-gold' : 'text-brand-cream hover:text-brand-gold'}`}>Home</button>
             
             <div className="relative group">
-              <button className={`text-sm font-medium transition uppercase tracking-wide flex items-center gap-1 py-2 ${[Page.BUSINESS, Page.INDIVIDUALS, Page.PARTNERS].includes(activePage) ? 'text-brand-gold' : 'text-brand-cream hover:text-brand-gold'}`}>
+              <button className={`text-sm font-medium transition uppercase tracking-wide flex items-center gap-1 py-2 ${[Page.BUSINESS, Page.INDIVIDUALS, Page.PARTNERS, Page.IMMEDIATE_CARE].includes(activePage) ? 'text-brand-gold' : 'text-brand-cream hover:text-brand-gold'}`}>
                 Solutions <ChevronDown className="w-4 h-4" />
               </button>
               <div className="absolute left-0 top-full pt-2 w-56 hidden group-hover:block z-50">
                 <div className="bg-white text-brand-teal shadow-xl rounded-md overflow-hidden transition-all transform origin-top-left border border-gray-100 animate-fade-in">
                   <button onClick={() => navigateTo(Page.BUSINESS)} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors">Business Owners</button>
                   <button onClick={() => navigateTo(Page.INDIVIDUALS)} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors">Private Clients</button>
+                  <button onClick={() => navigateTo(Page.IMMEDIATE_CARE)} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors font-semibold">Immediate Care Plan</button>
                   <button onClick={() => navigateTo(Page.PARTNERS)} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm hover:text-brand-gold transition-colors">Advisor Partners</button>
                 </div>
               </div>
@@ -105,6 +123,7 @@ const App: React.FC = () => {
             <div className="px-6 py-2 text-xs font-bold text-brand-gold uppercase tracking-widest opacity-70">Solutions</div>
             <button onClick={() => navigateTo(Page.BUSINESS)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-cream">Business Owners</button>
             <button onClick={() => navigateTo(Page.INDIVIDUALS)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-cream">Private Clients</button>
+            <button onClick={() => navigateTo(Page.IMMEDIATE_CARE)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-gold font-semibold italic">Immediate Care Plan</button>
             <button onClick={() => navigateTo(Page.PARTNERS)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-cream border-b border-brand-teal/30">Advisor Partners</button>
             <button onClick={() => navigateTo(Page.TOOLS)} className="block w-full text-left px-6 py-4 hover:bg-brand-teal text-sm text-brand-cream flex items-center gap-2 border-b border-brand-teal/30"><Sparkles className="w-3 h-3 text-brand-gold" /> Smart Insights</button>
             <button onClick={() => navigateTo(Page.ABOUT)} className="block w-full text-left px-6 py-4 hover:bg-brand-teal text-sm text-brand-cream border-b border-brand-teal/30">About Us</button>
@@ -115,7 +134,17 @@ const App: React.FC = () => {
 
       {/* Main Content Area */}
       <main className="flex-grow animate-fade-in">
-        {renderPage()}
+        <Routes>
+          <Route path="/" element={<Home navigateTo={navigateTo} />} />
+          <Route path="/business" element={<Business navigateTo={navigateTo} />} />
+          <Route path="/individuals" element={<Individuals navigateTo={navigateTo} />} />
+          <Route path="/partners" element={<Partners navigateTo={navigateTo} />} />
+          <Route path="/about" element={<About navigateTo={navigateTo} />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/insights" element={<Tools />} />
+          <Route path="/immediate-care" element={<ImmediateCare navigateTo={navigateTo} />} />
+          <Route path="*" element={<Home navigateTo={navigateTo} />} />
+        </Routes>
       </main>
 
       {/* Footer */}

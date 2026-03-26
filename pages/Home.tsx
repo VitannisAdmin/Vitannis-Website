@@ -1,5 +1,5 @@
 import React from 'react';
-import { Briefcase, Users, Handshake, Sparkles, ArrowRight } from 'lucide-react';
+import { Briefcase, Users, Handshake, Sparkles, ArrowRight, HeartPulse } from 'lucide-react';
 import Button from '../components/Button';
 import FeatureCard from '../components/FeatureCard';
 import { Page } from '../types';
@@ -44,7 +44,7 @@ const Home: React.FC<HomeProps> = ({ navigateTo }) => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
             <FeatureCard 
               title="Business Owners"
               description="Strategic retirement plans and tax-deductible solutions designed to maximize wealth retention."
@@ -56,6 +56,12 @@ const Home: React.FC<HomeProps> = ({ navigateTo }) => {
               description="Comprehensive market shopping for Long Term Care, Life, and Disability insurance."
               icon={<Users className="w-7 h-7" />}
               onClick={() => navigateTo(Page.INDIVIDUALS)}
+            />
+            <FeatureCard 
+              title="Immediate Care Plan"
+              description="A guaranteed solution for those currently receiving long-term care. Bridge the income gap."
+              icon={<HeartPulse className="w-7 h-7" />}
+              onClick={() => navigateTo(Page.IMMEDIATE_CARE)}
             />
             <FeatureCard 
               title="Advisor Partners"
