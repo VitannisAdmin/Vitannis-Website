@@ -12,6 +12,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Tools from './pages/Tools';
 import ImmediateCare from './pages/ImmediateCare';
+import ClientIntake from './pages/ClientIntake';
 
 const App: React.FC = () => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const App: React.FC = () => {
     if (path === '/contact') return Page.CONTACT;
     if (path === '/insights') return Page.TOOLS;
     if (path === '/immediate-care') return Page.IMMEDIATE_CARE;
+    if (path === '/intake') return Page.INTAKE;
     return Page.HOME;
   };
 
@@ -55,6 +57,7 @@ const App: React.FC = () => {
       case Page.CONTACT: path = '/contact'; break;
       case Page.TOOLS: path = '/insights'; break;
       case Page.IMMEDIATE_CARE: path = '/immediate-care'; break;
+      case Page.INTAKE: path = '/intake'; break;
     }
     navigate(path);
     setMobileMenuOpen(false);
@@ -140,9 +143,10 @@ const App: React.FC = () => {
           <Route path="/individuals" element={<Individuals navigateTo={navigateTo} />} />
           <Route path="/partners" element={<Partners navigateTo={navigateTo} />} />
           <Route path="/about" element={<About navigateTo={navigateTo} />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path="/contact" element={<Contact navigateTo={navigateTo} />} />
           <Route path="/insights" element={<Tools />} />
           <Route path="/immediate-care" element={<ImmediateCare navigateTo={navigateTo} />} />
+          <Route path="/intake" element={<ClientIntake navigateTo={navigateTo} />} />
           <Route path="*" element={<Home navigateTo={navigateTo} />} />
         </Routes>
       </main>
@@ -174,6 +178,7 @@ const App: React.FC = () => {
               <ul className="space-y-3 text-sm text-brand-cream/80 font-light">
                 <li><button onClick={() => navigateTo(Page.ABOUT)} className="hover:text-white transition">About Us</button></li>
                 <li><button onClick={() => navigateTo(Page.CONTACT)} className="hover:text-white transition">Contact Us</button></li>
+                <li><button onClick={() => navigateTo(Page.INTAKE)} className="hover:text-white transition text-brand-gold font-medium">Client Intake Form</button></li>
                 <li><a href="#" className="hover:text-white transition">Privacy Policy</a></li>
               </ul>
             </div>

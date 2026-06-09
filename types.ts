@@ -7,6 +7,7 @@ export enum Page {
   ABOUT = 'about',
   CONTACT = 'contact',
   IMMEDIATE_CARE = 'immediate-care',
+  INTAKE = 'intake',
 }
 
 export interface NavItem {
