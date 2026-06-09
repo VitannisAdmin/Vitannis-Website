@@ -13,6 +13,63 @@
     <link rel="stylesheet" href="/index.css">
 </head>
 <body>
+    <!-- A little help for the Netlify post-processing bots -->
+    <!-- Form 1: clientIntake -->
+    <form name="clientIntake" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="city" />
+      <input type="text" name="state" />
+      <input type="text" name="clientName" />
+      <input type="text" name="clientAge" />
+      <input type="text" name="spouseName" />
+      <input type="text" name="spouseAge" />
+      <input type="text" name="kids" />
+      <input type="text" name="kidsAges" />
+      <input type="text" name="otherDependents" />
+      <input type="text" name="otherDependentsAges" />
+      <input type="text" name="lifeInsuranceWork" />
+      <input type="text" name="lifeInsuranceIndiv" />
+      <input type="text" name="lifeCoverageAmt" />
+      <input type="text" name="lifePolicyType" />
+      <input type="text" name="disabilityWork" />
+      <input type="text" name="disabilityIndiv" />
+      <input type="text" name="disabilityCoverageAmt" />
+      <input type="text" name="disabilityPolicyType" />
+      <input type="text" name="ltcWork" />
+      <input type="text" name="ltcIndiv" />
+      <input type="text" name="ltcCoverageAmt" />
+      <input type="text" name="ltcPolicyType" />
+      <input type="text" name="coverageConcerns" />
+      <input type="text" name="income" />
+      <input type="text" name="netWorth" />
+      <input type="text" name="goals" />
+      <input type="text" name="isBusinessOwner" />
+      <input type="text" name="bizName" />
+      <input type="text" name="bizIndustry" />
+      <input type="text" name="bizAge" />
+      <input type="text" name="bizOwnership" />
+      <input type="text" name="bizEmployees" />
+      <input type="text" name="bizStructure" />
+      <input type="text" name="hasBuySell" />
+      <input type="text" name="hasRetirementPlan" />
+      <input type="text" name="retirementPlanType" />
+      <input type="text" name="hasKeyEmployeeIns" />
+      <input type="text" name="hasExecutiveBenefits" />
+      <input type="text" name="keyEmployeeAbsenceRisk" />
+      <input type="text" name="wantsTaxDeductions" />
+      <input type="text" name="wantsKeyEmployeeRetention" />
+      <input type="text" name="reviewEmployeeBenefits" />
+      <input type="text" name="reviewRetirementPlan" />
+      <input type="text" name="reviewRiskManagement" />
+    </form>
+    
+    <!-- Form 2: clientContact -->
+    <form name="clientContact" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="firstName" />
+      <input type="text" name="lastName" />
+      <input type="text" name="email" />
+      <input type="text" name="userType" />
+      <input type="text" name="message" />
+    </form>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
 </body>

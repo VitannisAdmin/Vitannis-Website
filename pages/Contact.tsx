@@ -21,6 +21,15 @@ const Contact: React.FC<ContactProps> = ({ navigateTo }) => {
     const formData = new FormData(form);
     
     try {
+      // For local development or AI Studio preview (where Netlify forms backend isn't available)
+      if (window.location.hostname === 'localhost' || window.location.hostname.includes('.run.app')) {
+        await new Promise(resolve => setTimeout(resolve, 800));
+        setSubmitted(true);
+        form.reset();
+        setSubmitting(false);
+        return;
+      }
+
       const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
