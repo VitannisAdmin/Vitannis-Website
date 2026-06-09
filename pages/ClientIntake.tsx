@@ -124,6 +124,31 @@ const ClientIntake: React.FC<ClientIntakeProps> = () => {
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Client Name & Age */}
+              <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-4 gap-6">
+                <div className="sm:col-span-3">
+                  <label htmlFor="clientName" className="block text-sm font-medium text-gray-700 mb-1">Client Full Name</label>
+                  <input 
+                    type="text" 
+                    id="clientName" 
+                    name="clientName" 
+                    required 
+                    className="w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-gold focus:ring focus:ring-brand-gold/20 bg-slate-50 hover:bg-white border py-2.5 px-4 text-slate-900 outline-none transition"
+                  />
+                </div>
+                <div className="sm:col-span-1">
+                  <label htmlFor="clientAge" className="block text-sm font-medium text-gray-700 mb-1">Age</label>
+                  <input 
+                    type="number" 
+                    id="clientAge" 
+                    name="clientAge" 
+                    min="0" 
+                    required 
+                    className="w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-gold focus:ring focus:ring-brand-gold/20 bg-slate-50 hover:bg-white border py-2.5 px-4 text-slate-900 outline-none transition"
+                  />
+                </div>
+              </div>
+
               {/* Location */}
               <div>
                 <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">City</label>
@@ -163,31 +188,6 @@ const ClientIntake: React.FC<ClientIntakeProps> = () => {
                   <option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option>
                   <option value="WY">Wyoming</option>
                 </select>
-              </div>
-
-              {/* Client Name & Age */}
-              <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-4 gap-6">
-                <div className="sm:col-span-3">
-                  <label htmlFor="clientName" className="block text-sm font-medium text-gray-700 mb-1">Client Full Name</label>
-                  <input 
-                    type="text" 
-                    id="clientName" 
-                    name="clientName" 
-                    required 
-                    className="w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-gold focus:ring focus:ring-brand-gold/20 bg-slate-50 hover:bg-white border py-2.5 px-4 text-slate-900 outline-none transition"
-                  />
-                </div>
-                <div className="sm:col-span-1">
-                  <label htmlFor="clientAge" className="block text-sm font-medium text-gray-700 mb-1">Age</label>
-                  <input 
-                    type="number" 
-                    id="clientAge" 
-                    name="clientAge" 
-                    min="0" 
-                    required 
-                    className="w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-gold focus:ring focus:ring-brand-gold/20 bg-slate-50 hover:bg-white border py-2.5 px-4 text-slate-900 outline-none transition"
-                  />
-                </div>
               </div>
               
               {/* Spouse Full Name & Age */}
