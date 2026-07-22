@@ -13,11 +13,13 @@ import Contact from './pages/Contact';
 import Tools from './pages/Tools';
 import ImmediateCare from './pages/ImmediateCare';
 import ClientIntake from './pages/ClientIntake';
+import { ObfuscatedPhone, ObfuscatedEmail } from './components/ContactLinks';
 
 const App: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [solutionsOpen, setSolutionsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   // Map paths to Page enum for styling
@@ -86,16 +88,19 @@ const App: React.FC = () => {
           <nav className="hidden md:flex space-x-8 items-center">
             <button onClick={() => navigateTo(Page.HOME)} className={`text-sm font-medium transition uppercase tracking-wide ${activePage === Page.HOME ? 'text-brand-gold' : 'text-brand-cream hover:text-brand-gold'}`}>Home</button>
             
-            <div className="relative group">
-              <button className={`text-sm font-medium transition uppercase tracking-wide flex items-center gap-1 py-2 ${[Page.BUSINESS, Page.INDIVIDUALS, Page.PARTNERS, Page.IMMEDIATE_CARE].includes(activePage) ? 'text-brand-gold' : 'text-brand-cream hover:text-brand-gold'}`}>
+            <div className="relative group" onMouseLeave={() => setSolutionsOpen(false)}>
+              <button 
+                onClick={() => setSolutionsOpen(!solutionsOpen)}
+                onMouseEnter={() => setSolutionsOpen(true)}
+                className={`text-sm font-medium transition uppercase tracking-wide flex items-center gap-1 py-2 ${[Page.BUSINESS, Page.INDIVIDUALS, Page.PARTNERS, Page.IMMEDIATE_CARE].includes(activePage) ? 'text-brand-gold' : 'text-brand-cream hover:text-brand-gold'}`}>
                 Solutions <ChevronDown className="w-4 h-4" />
               </button>
-              <div className="absolute left-0 top-full pt-2 w-56 hidden group-hover:block z-50">
+              <div className={`absolute left-0 top-full pt-2 w-56 z-50 ${solutionsOpen ? 'block' : 'hidden'}`}>
                 <div className="bg-white text-brand-teal shadow-xl rounded-md overflow-hidden transition-all transform origin-top-left border border-gray-100 animate-fade-in">
-                  <button onClick={() => navigateTo(Page.BUSINESS)} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors">Business Owners</button>
-                  <button onClick={() => navigateTo(Page.INDIVIDUALS)} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors">Private Clients</button>
-                  <button onClick={() => navigateTo(Page.IMMEDIATE_CARE)} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors font-semibold">Immediate Care Plan</button>
-                  <button onClick={() => navigateTo(Page.PARTNERS)} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm hover:text-brand-gold transition-colors">Advisor Partners</button>
+                  <button onClick={() => { navigateTo(Page.BUSINESS); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors">Business Owners</button>
+                  <button onClick={() => { navigateTo(Page.INDIVIDUALS); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors">Private Clients</button>
+                  <button onClick={() => { navigateTo(Page.IMMEDIATE_CARE); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors font-semibold">Immediate Care Plan</button>
+                  <button onClick={() => { navigateTo(Page.PARTNERS); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm hover:text-brand-gold transition-colors">Advisor Partners</button>
                 </div>
               </div>
             </div>
@@ -191,11 +196,11 @@ const App: React.FC = () => {
                 </li>
                 <li className="flex items-center gap-3">
                   <Phone className="w-4 h-4 text-brand-gold shrink-0" />
-                  <span>(843) 408-9653</span>
+                  <ObfuscatedPhone className="hover:text-white transition" />
                 </li>
                 <li className="flex items-center gap-3">
                   <Mail className="w-4 h-4 text-brand-gold shrink-0" />
-                  <a href="mailto:info@vitannis.com" className="hover:text-white">info@vitannis.com</a>
+                  <ObfuscatedEmail className="hover:text-white transition" />
                 </li>
               </ul>
             </div>

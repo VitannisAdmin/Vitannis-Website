@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Phone, Mail, MapPin, Send, AlertCircle, Check, Sparkles, User, Briefcase } from 'lucide-react';
 import Button from '../components/Button';
 import { Page } from '../types';
+import { ObfuscatedPhone, ObfuscatedEmail } from '../components/ContactLinks';
 
 interface ContactProps {
   navigateTo?: (page: Page) => void;
@@ -77,7 +78,7 @@ const Contact: React.FC<ContactProps> = ({ navigateTo }) => {
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-800 text-lg">Phone</h3>
-                    <p className="text-gray-600 mt-1">(843) 408-9653</p>
+                    <ObfuscatedPhone className="text-gray-600 mt-1 hover:text-brand-teal transition block" />
                   </div>
                 </div>
 
@@ -87,7 +88,7 @@ const Contact: React.FC<ContactProps> = ({ navigateTo }) => {
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-800 text-lg">Email</h3>
-                    <a href="mailto:info@vitannis.com" className="text-gray-600 mt-1 hover:text-brand-teal transition">info@vitannis.com</a>
+                    <ObfuscatedEmail className="text-gray-600 mt-1 hover:text-brand-teal transition block" />
                   </div>
                 </div>
 
