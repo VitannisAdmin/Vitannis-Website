@@ -54,10 +54,10 @@ const Tools: React.FC = () => {
       <section className="bg-brand-teal text-white py-16 md:py-20">
         <div className="container mx-auto px-6">
           <div className="flex items-center gap-2 text-brand-gold text-sm font-bold uppercase tracking-wider mb-4">
-            <span className="opacity-70">Home</span> / AI Tools
+            <span className="opacity-70">Home</span> / Q&A
           </div>
           <h1 className="font-serif text-4xl md:text-5xl font-bold mb-6 flex items-center gap-4">
-            Smart Insights <Sparkles className="text-brand-gold w-8 h-8 animate-pulse-slow" />
+            Q&A <Sparkles className="text-brand-gold w-8 h-8 animate-pulse-slow" />
           </h1>
           <p className="text-xl text-brand-cream/80 max-w-3xl font-light">Leverage our intelligent tools to bring clarity to your financial protection strategies.</p>
         </div>

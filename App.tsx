@@ -31,7 +31,7 @@ const App: React.FC = () => {
     if (path === '/partners') return Page.PARTNERS;
     if (path === '/about') return Page.ABOUT;
     if (path === '/contact') return Page.CONTACT;
-    if (path === '/insights') return Page.TOOLS;
+    if (path === '/insights' || path === '/qa') return Page.TOOLS;
     if (path === '/immediate-care') return Page.IMMEDIATE_CARE;
     if (path === '/intake') return Page.INTAKE;
     return Page.HOME;
@@ -57,7 +57,7 @@ const App: React.FC = () => {
       case Page.PARTNERS: path = '/partners'; break;
       case Page.ABOUT: path = '/about'; break;
       case Page.CONTACT: path = '/contact'; break;
-      case Page.TOOLS: path = '/insights'; break;
+      case Page.TOOLS: path = '/qa'; break;
       case Page.IMMEDIATE_CARE: path = '/immediate-care'; break;
       case Page.INTAKE: path = '/intake'; break;
     }
@@ -97,16 +97,16 @@ const App: React.FC = () => {
               </button>
               <div className={`absolute left-0 top-full pt-2 w-56 z-50 ${solutionsOpen ? 'block' : 'hidden'}`}>
                 <div className="bg-white text-brand-teal shadow-xl rounded-md overflow-hidden transition-all transform origin-top-left border border-gray-100 animate-fade-in">
+                  <button onClick={() => { navigateTo(Page.IMMEDIATE_CARE); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors font-semibold">Immediate Care Plan</button>
                   <button onClick={() => { navigateTo(Page.BUSINESS); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors">Business Owners</button>
                   <button onClick={() => { navigateTo(Page.INDIVIDUALS); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors">Private Clients</button>
-                  <button onClick={() => { navigateTo(Page.IMMEDIATE_CARE); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors font-semibold">Immediate Care Plan</button>
                   <button onClick={() => { navigateTo(Page.PARTNERS); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm hover:text-brand-gold transition-colors">Advisor Partners</button>
                 </div>
               </div>
             </div>
 
             <button onClick={() => navigateTo(Page.TOOLS)} className={`text-sm font-medium transition uppercase tracking-wide flex items-center gap-1 ${activePage === Page.TOOLS ? 'text-brand-gold' : 'text-brand-cream hover:text-brand-gold'}`}>
-              <Sparkles className="w-3 h-3 text-brand-gold" /> Smart Insights
+              <Sparkles className="w-3 h-3 text-brand-gold" /> Q&A
             </button>
             <button onClick={() => navigateTo(Page.ABOUT)} className={`text-sm font-medium transition uppercase tracking-wide ${activePage === Page.ABOUT ? 'text-brand-gold' : 'text-brand-cream hover:text-brand-gold'}`}>About Us</button>
             
@@ -129,11 +129,11 @@ const App: React.FC = () => {
           <div className="md:hidden bg-brand-teal-light border-t border-brand-teal animate-fade-in">
             <button onClick={() => navigateTo(Page.HOME)} className="block w-full text-left px-6 py-4 hover:bg-brand-teal text-sm text-brand-cream border-b border-brand-teal/30">Home</button>
             <div className="px-6 py-2 text-xs font-bold text-brand-gold uppercase tracking-widest opacity-70">Solutions</div>
+            <button onClick={() => navigateTo(Page.IMMEDIATE_CARE)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-gold font-semibold italic">Immediate Care Plan</button>
             <button onClick={() => navigateTo(Page.BUSINESS)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-cream">Business Owners</button>
             <button onClick={() => navigateTo(Page.INDIVIDUALS)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-cream">Private Clients</button>
-            <button onClick={() => navigateTo(Page.IMMEDIATE_CARE)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-gold font-semibold italic">Immediate Care Plan</button>
             <button onClick={() => navigateTo(Page.PARTNERS)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-cream border-b border-brand-teal/30">Advisor Partners</button>
-            <button onClick={() => navigateTo(Page.TOOLS)} className="block w-full text-left px-6 py-4 hover:bg-brand-teal text-sm text-brand-cream flex items-center gap-2 border-b border-brand-teal/30"><Sparkles className="w-3 h-3 text-brand-gold" /> Smart Insights</button>
+            <button onClick={() => navigateTo(Page.TOOLS)} className="block w-full text-left px-6 py-4 hover:bg-brand-teal text-sm text-brand-cream flex items-center gap-2 border-b border-brand-teal/30"><Sparkles className="w-3 h-3 text-brand-gold" /> Q&A</button>
             <button onClick={() => navigateTo(Page.ABOUT)} className="block w-full text-left px-6 py-4 hover:bg-brand-teal text-sm text-brand-cream border-b border-brand-teal/30">About Us</button>
             <button onClick={() => navigateTo(Page.CONTACT)} className="block w-full text-left px-6 py-4 hover:bg-brand-teal text-sm font-bold text-brand-gold">Contact Us</button>
           </div>
@@ -150,6 +150,7 @@ const App: React.FC = () => {
           <Route path="/about" element={<About navigateTo={navigateTo} />} />
           <Route path="/contact" element={<Contact navigateTo={navigateTo} />} />
           <Route path="/insights" element={<Tools />} />
+          <Route path="/qa" element={<Tools />} />
           <Route path="/immediate-care" element={<ImmediateCare navigateTo={navigateTo} />} />
           <Route path="/intake" element={<ClientIntake navigateTo={navigateTo} />} />
           <Route path="*" element={<Home navigateTo={navigateTo} />} />
@@ -175,7 +176,7 @@ const App: React.FC = () => {
                 <li><button onClick={() => navigateTo(Page.HOME)} className="hover:text-white transition">Home</button></li>
                 <li><button onClick={() => navigateTo(Page.BUSINESS)} className="hover:text-white transition">Business Solutions</button></li>
                 <li><button onClick={() => navigateTo(Page.INDIVIDUALS)} className="hover:text-white transition">Private Client</button></li>
-                <li><button onClick={() => navigateTo(Page.TOOLS)} className="hover:text-white transition flex items-center gap-1"><Sparkles className="w-3 h-3" /> Smart Insights</button></li>
+                <li><button onClick={() => navigateTo(Page.TOOLS)} className="hover:text-white transition flex items-center gap-1"><Sparkles className="w-3 h-3" /> Q&A</button></li>
               </ul>
             </div>
             <div>

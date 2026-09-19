@@ -46,6 +46,12 @@ const Home: React.FC<HomeProps> = ({ navigateTo }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
             <FeatureCard 
+              title="Immediate Care Plan"
+              description="A guaranteed solution for those currently receiving long-term care. Bridge the income gap."
+              icon={<HeartPulse className="w-7 h-7" />}
+              onClick={() => navigateTo(Page.IMMEDIATE_CARE)}
+            />
+            <FeatureCard 
               title="Business Owners"
               description="Strategic retirement plans and tax-deductible solutions designed to maximize wealth retention."
               icon={<Briefcase className="w-7 h-7" />}
@@ -56,12 +62,6 @@ const Home: React.FC<HomeProps> = ({ navigateTo }) => {
               description="Comprehensive market shopping for Long Term Care, Life, and Disability insurance."
               icon={<Users className="w-7 h-7" />}
               onClick={() => navigateTo(Page.INDIVIDUALS)}
-            />
-            <FeatureCard 
-              title="Immediate Care Plan"
-              description="A guaranteed solution for those currently receiving long-term care. Bridge the income gap."
-              icon={<HeartPulse className="w-7 h-7" />}
-              onClick={() => navigateTo(Page.IMMEDIATE_CARE)}
             />
             <FeatureCard 
               title="Advisor Partners"
