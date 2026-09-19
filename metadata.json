@@ -1,5 +1,8 @@
 {
   "name": "Vitannis - Fiduciary Insurance Advisory",
   "description": "A high-end, fiduciary-level insurance advisory web application featuring AI-powered policy decoding and strategic assessment tools.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

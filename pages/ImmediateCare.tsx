@@ -27,7 +27,7 @@ const ImmediateCare: React.FC<ImmediateCareProps> = ({ navigateTo }) => {
               The Immediate <span className="text-brand-gold italic">Care Plan</span>
             </h1>
             <p className="text-lg md:text-xl text-brand-cream/80 mb-10 leading-relaxed font-light">
-              A guaranteed financial solution designed specifically for individuals already receiving long-term care. Bridge the gap between income and expenses while protecting your family's legacy.
+              Cap the cost of LTC. A guaranteed financial solution designed specifically for individuals already receiving long-term care.
             </p>
             <div className="flex flex-col md:flex-row gap-4 justify-center">
               <Button onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}>

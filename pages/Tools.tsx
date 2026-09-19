@@ -1,187 +1,301 @@
-import React, { useState } from 'react';
-import { Sparkles, FileSearch, Compass, AlertCircle } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Sparkles, Send, RotateCcw, ShieldCheck, AlertCircle, HeartPulse, Briefcase, HelpCircle, Bot, User } from 'lucide-react';
 import Markdown from 'react-markdown';
-import Button from '../components/Button';
-import { UserType } from '../types';
-import { decodePolicy, generateAssessment } from '../services/geminiService';
+import { sendMessageToAdvisor, ChatMessage } from '../services/geminiService';
+
+const SUGGESTED_QUERIES = [
+  {
+    id: 'ltc',
+    label: 'Immediate Care Plan (Long-Term Care)',
+    icon: HeartPulse,
+    query: 'How does the Immediate Care Plan work if someone is already residing in assisted living or memory care?',
+  },
+  {
+    id: 'biz',
+    label: 'Business Tax Strategy',
+    icon: Briefcase,
+    query: 'What are the corporate tax deduction benefits of setting up a Defined Benefit Plan for business owners?',
+  },
+  {
+    id: 'fiduciary',
+    label: 'Fiduciary Difference',
+    icon: HelpCircle,
+    query: 'How does a fiduciary insurance advisory differ from a commission-based insurance broker?',
+  },
+];
+
+const INITIAL_MESSAGE: ChatMessage = {
+  id: 'welcome',
+  role: 'model',
+  text: `Welcome to **Vitannis Questions & Advice**. 
+
+I am here to answer your questions regarding our specialized solutions, including:
+* **Immediate Care Plan**: Guaranteed lifetime income solutions for families currently paying facility or memory care expenses.
+* **Business Strategies**: Defined Benefit Plans, key person protection, and buy-sell funding.
+* **Private Client Advisory**: Independent fiduciary analysis of life insurance and wealth preservation strategies.
+
+Select a suggested prompt below or type your question in the chat box to begin.`,
+  timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+};
 
 const Tools: React.FC = () => {
-  // Policy Decoder State
-  const [decoderInput, setDecoderInput] = useState('');
-  const [decoderResult, setDecoderResult] = useState('');
-  const [decoderLoading, setDecoderLoading] = useState(false);
-  const [decoderError, setDecoderError] = useState('');
+  const [messages, setMessages] = useState<ChatMessage[]>([INITIAL_MESSAGE]);
+  const [inputMessage, setInputMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Assessment State
-  const [assessmentType, setAssessmentType] = useState<UserType>(UserType.BUSINESS_OWNER);
-  const [assessmentInput, setAssessmentInput] = useState('');
-  const [assessmentResult, setAssessmentResult] = useState('');
-  const [assessmentLoading, setAssessmentLoading] = useState(false);
-  const [assessmentError, setAssessmentError] = useState('');
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
-  const handleDecoderSubmit = async () => {
-    if (!decoderInput.trim()) return;
-    setDecoderLoading(true);
-    setDecoderResult('');
-    setDecoderError('');
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isLoading]);
+
+  const handleSendMessage = async (textToSend?: string) => {
+    const messageContent = (textToSend || inputMessage).trim();
+    if (!messageContent || isLoading) return;
+
+    const userMessage: ChatMessage = {
+      id: `user-${Date.now()}`,
+      role: 'user',
+      text: messageContent,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+
+    // Prepare previous history for the AI model
+    const chatHistory = messages
+      .filter((msg) => msg.id !== 'welcome')
+      .map((msg) => ({ role: msg.role, text: msg.text }));
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInputMessage('');
+    setIsLoading(true);
+
     try {
-      const result = await decodePolicy(decoderInput);
-      setDecoderResult(result);
-    } catch (err) {
-      setDecoderError('Failed to generate insight. Please check your connection and try again.');
+      const reply = await sendMessageToAdvisor(messageContent, chatHistory);
+      const assistantMessage: ChatMessage = {
+        id: `model-${Date.now()}`,
+        role: 'model',
+        text: reply,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+      setMessages((prev) => [...prev, assistantMessage]);
+    } catch (error) {
+      const errorMessage: ChatMessage = {
+        id: `error-${Date.now()}`,
+        role: 'model',
+        text: 'I apologize, but I encountered an issue connecting to the advisory server. Please try submitting your question again.',
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
-      setDecoderLoading(false);
+      setIsLoading(false);
+      // Keep focus on input for fluid desktop typing
+      setTimeout(() => inputRef.current?.focus(), 100);
     }
   };
 
-  const handleAssessmentSubmit = async () => {
-    if (!assessmentInput.trim()) return;
-    setAssessmentLoading(true);
-    setAssessmentResult('');
-    setAssessmentError('');
-    try {
-      const result = await generateAssessment(assessmentType, assessmentInput);
-      setAssessmentResult(result);
-    } catch (err) {
-      setAssessmentError('Failed to generate assessment. Please try again.');
-    } finally {
-      setAssessmentLoading(false);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
     }
+  };
+
+  const handleResetChat = () => {
+    setMessages([
+      {
+        ...INITIAL_MESSAGE,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      },
+    ]);
+    setInputMessage('');
   };
 
   return (
     <div className="animate-fade-in">
-      <section className="bg-brand-teal text-white py-16 md:py-20">
+      {/* Hero Header */}
+      <section className="bg-brand-teal text-white py-14 md:py-16">
         <div className="container mx-auto px-6">
-          <div className="flex items-center gap-2 text-brand-gold text-sm font-bold uppercase tracking-wider mb-4">
-            <span className="opacity-70">Home</span> / Q&A
+          <div className="flex items-center gap-2 text-brand-gold text-xs md:text-sm font-bold uppercase tracking-wider mb-3">
+            <span className="opacity-70">Home</span> / Questions &amp; Advice
           </div>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold mb-6 flex items-center gap-4">
-            Q&A <Sparkles className="text-brand-gold w-8 h-8 animate-pulse-slow" />
+          <h1 className="font-serif text-3xl md:text-5xl font-bold mb-4 flex items-center gap-3">
+            Questions &amp; Advice <Sparkles className="text-brand-gold w-7 h-7 md:w-8 md:h-8 animate-pulse-slow" />
           </h1>
-          <p className="text-xl text-brand-cream/80 max-w-3xl font-light">Leverage our intelligent tools to bring clarity to your financial protection strategies.</p>
+          <p className="text-lg md:text-xl text-brand-cream/80 max-w-3xl font-light">
+            Direct, fiduciary-level intelligence on the Immediate Care Plan, business tax deductions, and wealth protection.
+          </p>
         </div>
       </section>
 
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto mb-16 text-center">
-            <p className="text-gray-600 mb-6 text-lg">
-              Vitannis uses advanced technology to empower our clients. Select a tool below to get started. 
-            </p>
-            <div className="inline-flex items-center gap-2 bg-yellow-50 text-yellow-800 px-4 py-2 rounded-full text-xs font-semibold border border-yellow-100">
-               <AlertCircle className="w-3 h-3" />
-               AI insights are for educational purposes and do not replace professional fiduciary advice.
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-7xl mx-auto">
+      {/* Main Interactive Chat Section */}
+      <section className="py-12 md:py-16 bg-white" id="qa-chat-section">
+        <div className="container mx-auto px-4 md:px-6">
+          
+          {/* Outer Chat Container */}
+          <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden flex flex-col h-[740px] md:h-[780px]">
             
-            {/* Tool 1: Policy Decoder */}
-            <div className="bg-brand-cream-light rounded-2xl shadow-xl overflow-hidden border border-brand-cream flex flex-col">
-              <div className="bg-brand-teal p-6 flex justify-between items-center">
-                <h3 className="font-serif text-xl font-bold text-white flex items-center gap-2">
-                  <FileSearch className="text-brand-gold" /> Policy Decoder
-                </h3>
-              </div>
-              <div className="p-8 flex-grow flex flex-col">
-                <p className="text-sm text-gray-600 mb-4">Confused by insurance jargon? Paste it below for a plain-English explanation.</p>
-                <textarea 
-                  rows={5} 
-                  className="w-full p-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-gold outline-none mb-6 text-sm resize-none" 
-                  placeholder="Paste confusing policy text here..."
-                  value={decoderInput}
-                  onChange={(e) => setDecoderInput(e.target.value)}
-                ></textarea>
-                
-                <Button 
-                  onClick={handleDecoderSubmit} 
-                  isLoading={decoderLoading} 
-                  disabled={!decoderInput.trim()} 
-                  fullWidth
-                >
-                  Simplify with AI
-                </Button>
-
-                {(decoderResult || decoderError) && (
-                  <div className={`mt-6 p-6 rounded-lg border-l-4 shadow-sm animate-fade-in ${decoderError ? 'bg-red-50 border-red-400' : 'bg-white border-brand-gold'}`}>
-                    {decoderError ? (
-                      <p className="text-red-600 text-sm">{decoderError}</p>
-                    ) : (
-                      <>
-                        <h4 className="font-bold text-brand-teal mb-3 text-sm uppercase tracking-wide">Explanation:</h4>
-                        <div className="text-gray-700 text-sm leading-relaxed markdown-body">
-                          <Markdown>{decoderResult}</Markdown>
-                        </div>
-                      </>
-                    )}
+            {/* Chat Top Bar */}
+            <div className="bg-brand-teal text-white px-6 py-4 flex items-center justify-between border-b border-brand-teal-light">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-brand-gold/20 border border-brand-gold/40 flex items-center justify-center text-brand-gold shrink-0">
+                  <ShieldCheck className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="font-serif font-bold text-lg text-white leading-tight">
+                    Questions &amp; Advice
+                  </h2>
+                  <div className="flex items-center gap-2 text-xs text-brand-cream/70 font-light">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Vitannis Fiduciary AI Advisor &bull; Online
                   </div>
-                )}
+                </div>
               </div>
+
+              <button
+                type="button"
+                onClick={handleResetChat}
+                className="text-xs text-brand-cream/80 hover:text-brand-gold flex items-center gap-1.5 px-3 py-1.5 rounded-md hover:bg-brand-teal-light/50 transition cursor-pointer"
+                title="Restart conversation"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Reset</span>
+              </button>
             </div>
 
-            {/* Tool 2: Strategic Assessment */}
-            <div className="bg-brand-cream-light rounded-2xl shadow-xl overflow-hidden border border-brand-cream flex flex-col">
-              <div className="bg-brand-teal p-6 flex justify-between items-center">
-                <h3 className="font-serif text-xl font-bold text-white flex items-center gap-2">
-                  <Compass className="text-brand-gold" /> Strategic Assessment
-                </h3>
-              </div>
-              <div className="p-8 flex-grow flex flex-col">
-                <p className="text-sm text-gray-600 mb-4">Describe your situation. We'll suggest focus areas.</p>
-                
-                <div className="relative mb-3">
-                    <select 
-                      className="w-full p-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-brand-gold outline-none appearance-none bg-white"
-                      value={assessmentType}
-                      onChange={(e) => setAssessmentType(e.target.value as UserType)}
+            {/* Messages Scroll Area */}
+            <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 bg-brand-cream-light/40">
+              {messages.map((msg) => {
+                const isUser = msg.role === 'user';
+                return (
+                  <div
+                    key={msg.id}
+                    className={`flex items-start gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
+                  >
+                    {/* Avatar */}
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center text-xs shrink-0 ${
+                        isUser
+                          ? 'bg-brand-gold text-brand-teal font-semibold'
+                          : 'bg-brand-teal text-brand-gold'
+                      }`}
                     >
-                      <option value={UserType.BUSINESS_OWNER}>I am a Business Owner</option>
-                      <option value={UserType.INDIVIDUAL}>I am an Individual / Head of Family</option>
-                      <option value={UserType.ADVISOR}>I am a Financial Advisor</option>
-                    </select>
-                     <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-500">
-                        <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+                      {isUser ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+                    </div>
+
+                    {/* Speech Bubble */}
+                    <div className={`max-w-[85%] md:max-w-[78%] flex flex-col ${isUser ? 'items-end' : 'items-start'}`}>
+                      <div
+                        className={`rounded-2xl px-5 py-3.5 shadow-sm text-sm leading-relaxed ${
+                          isUser
+                            ? 'bg-brand-teal text-white rounded-tr-xs'
+                            : 'bg-white border border-gray-200 text-brand-dark rounded-tl-xs'
+                        }`}
+                      >
+                        {isUser ? (
+                          <p className="whitespace-pre-wrap">{msg.text}</p>
+                        ) : (
+                          <div className="markdown-body">
+                            <Markdown>{msg.text}</Markdown>
+                          </div>
+                        )}
                       </div>
-                </div>
-
-                <textarea 
-                  rows={4} 
-                  className="w-full p-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-gold outline-none mb-6 text-sm resize-none" 
-                  placeholder="e.g., I have a successful dental practice with 5 employees and want to save on taxes..."
-                  value={assessmentInput}
-                  onChange={(e) => setAssessmentInput(e.target.value)}
-                ></textarea>
-                
-                <Button 
-                  onClick={handleAssessmentSubmit} 
-                  isLoading={assessmentLoading} 
-                  disabled={!assessmentInput.trim()} 
-                  fullWidth
-                  variant='primary'
-                  className="bg-brand-gold text-brand-teal"
-                >
-                  Analyze Needs
-                </Button>
-
-                {(assessmentResult || assessmentError) && (
-                  <div className={`mt-6 p-6 rounded-lg border-l-4 shadow-sm animate-fade-in ${assessmentError ? 'bg-red-50 border-red-400' : 'bg-white border-brand-teal'}`}>
-                    {assessmentError ? (
-                      <p className="text-red-600 text-sm">{assessmentError}</p>
-                    ) : (
-                      <>
-                        <h4 className="font-bold text-brand-teal mb-3 text-sm uppercase tracking-wide">Strategic Recommendations:</h4>
-                        <div className="text-gray-700 text-sm leading-relaxed markdown-body">
-                          <Markdown>{assessmentResult}</Markdown>
-                        </div>
-                      </>
-                    )}
+                      <span className="text-[10px] text-gray-400 mt-1 px-1">
+                        {msg.timestamp}
+                      </span>
+                    </div>
                   </div>
-                )}
+                );
+              })}
+
+              {/* Loading indicator */}
+              {isLoading && (
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-brand-teal text-brand-gold flex items-center justify-center shrink-0">
+                    <Bot className="w-4 h-4" />
+                  </div>
+                  <div className="bg-white border border-gray-200 rounded-2xl rounded-tl-xs px-5 py-3 shadow-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-brand-gold animate-bounce [animation-delay:-0.3s]"></div>
+                      <div className="w-2 h-2 rounded-full bg-brand-gold animate-bounce [animation-delay:-0.15s]"></div>
+                      <div className="w-2 h-2 rounded-full bg-brand-gold animate-bounce"></div>
+                      <span className="text-xs text-gray-500 ml-2 font-light">Consulting fiduciary intelligence...</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Chat Box Input Area with Suggested Entries */}
+            <div className="p-4 md:p-5 bg-white border-t border-gray-200">
+              
+              {/* Suggested Entries in the chat box */}
+              <div className="mb-3">
+                <div className="text-[11px] uppercase tracking-wider text-gray-400 font-semibold mb-2 flex items-center gap-1.5">
+                  <Sparkles className="w-3 h-3 text-brand-gold" /> Suggested Questions:
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {SUGGESTED_QUERIES.map((suggestion) => {
+                    const Icon = suggestion.icon;
+                    return (
+                      <button
+                        key={suggestion.id}
+                        type="button"
+                        onClick={() => handleSendMessage(suggestion.query)}
+                        disabled={isLoading}
+                        className="text-left text-xs bg-brand-cream-light hover:bg-brand-cream text-brand-teal border border-brand-cream hover:border-brand-gold/50 px-3 py-1.5 rounded-full transition-all duration-150 flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
+                      >
+                        <Icon className="w-3.5 h-3.5 text-brand-gold shrink-0" />
+                        <span className="truncate max-w-[280px] md:max-w-none">{suggestion.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Chat Textarea & Submit */}
+              <div className="flex items-end gap-2 bg-brand-cream-light/60 border border-gray-300 focus-within:border-brand-teal focus-within:ring-2 focus-within:ring-brand-teal/20 rounded-xl p-2 transition">
+                <textarea
+                  ref={inputRef}
+                  rows={2}
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Ask a question about the Immediate Care Plan, business tax deductions, or coverage..."
+                  disabled={isLoading}
+                  className="flex-1 bg-transparent border-0 outline-none text-sm text-brand-dark placeholder-gray-400 resize-none p-2 leading-relaxed"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => handleSendMessage()}
+                  disabled={!inputMessage.trim() || isLoading}
+                  className="bg-brand-gold hover:bg-brand-teal text-brand-teal hover:text-white disabled:bg-gray-200 disabled:text-gray-400 p-2.5 rounded-lg transition shadow-sm font-semibold flex items-center justify-center shrink-0 cursor-pointer disabled:cursor-not-allowed"
+                  title="Send message"
+                >
+                  <Send className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Footer Disclaimer */}
+              <div className="mt-2.5 flex items-center justify-between text-[11px] text-gray-500 font-light">
+                <span className="flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3 text-brand-gold shrink-0" />
+                  Educational purposes only &bull; Does not constitute binding fiduciary or legal advice.
+                </span>
+                <span className="hidden sm:inline text-gray-400">
+                  Press Enter to send, Shift+Enter for newline
+                </span>
               </div>
             </div>
 
           </div>
+
         </div>
       </section>
     </div>

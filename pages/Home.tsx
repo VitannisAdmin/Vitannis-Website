@@ -80,15 +80,15 @@ const Home: React.FC<HomeProps> = ({ navigateTo }) => {
             <div className="relative z-10 md:w-2/3">
               <h3 className="font-serif text-2xl md:text-3xl font-bold flex items-center gap-3 mb-3">
                 <Sparkles className="w-6 h-6 text-brand-gold" /> 
-                Introducing Smart Insights
+                Interactive Questions &amp; Advice
               </h3>
               <p className="text-brand-cream/90 max-w-xl font-light leading-relaxed">
-                Use our new AI-powered tools to decode complex policies or assess your protection needs instantly.
+                Get immediate clarity on the Immediate Care Plan, business tax strategies, and wealth protection.
               </p>
             </div>
             <div className="relative z-10 mt-8 md:mt-0">
               <button className="bg-brand-gold text-brand-teal px-8 py-3 rounded-full font-bold shadow-lg flex items-center gap-2 hover:bg-white transition-all duration-300 transform group-hover:translate-x-2">
-                Try AI Tools <ArrowRight className="w-4 h-4" />
+                Ask Questions &amp; Advice <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </div>

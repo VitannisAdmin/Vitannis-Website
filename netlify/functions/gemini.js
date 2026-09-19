@@ -8,7 +8,8 @@ export default async (req, context) => {
 
     try {
         const body = await req.json();
-        const { prompt, systemInstruction } = body;
+        const prompt = body.message || body.prompt;
+        const systemInstruction = body.systemInstruction || "You are a fiduciary insurance advisor for Vitannis.";
         
         // Securely pull the API key from Netlify's environment variables
         const apiKey = Netlify.env.get("GEMINI_API_KEY");
@@ -18,8 +19,8 @@ export default async (req, context) => {
             return new Response(JSON.stringify({ error: "Server configuration error." }), { status: 500 });
         }
 
-        // Call the Gemini 3 Flash API (Latest)
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+        // Call the Gemini API server-side
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`;
         
         const payload = {
             contents: [{ parts: [{ text: prompt }] }],
