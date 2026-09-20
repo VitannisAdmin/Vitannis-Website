@@ -24,7 +24,7 @@ const Home: React.FC<HomeProps> = ({ navigateTo }) => {
             Living Well. <span className="text-brand-gold italic">Secured.</span>
           </h1>
           <p className="text-lg md:text-xl text-brand-cream/80 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
-            50+ years of expertise helping people make smart insurance decisions.
+            50+ years of expertise helping with smart insurance decisions.
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <Button onClick={() => navigateTo(Page.ABOUT)}>Learn About Us</Button>
