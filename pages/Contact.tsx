@@ -116,7 +116,7 @@ const Contact: React.FC<ContactProps> = ({ navigateTo }) => {
                     </div>
                     <h3 className="font-serif text-3xl text-brand-teal font-bold mb-4">Message Sent</h3>
                     <p className="text-gray-600 max-w-md mx-auto font-light leading-relaxed mb-8">
-                      Thank you for contacting Vitannis. Our team of fiduciary insurance advisors has received your request and will follow up with you within one business day.
+                      Thank you for contacting Vitannis. Our team of insurance advisors has received your request and will follow up with you within one business day.
                     </p>
                     <button 
                       type="button" 
@@ -225,7 +225,7 @@ const Contact: React.FC<ContactProps> = ({ navigateTo }) => {
                           name="message" 
                           rows={4} 
                           className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/20 outline-none transition bg-slate-50 hover:bg-white text-slate-850 shadow-sm resize-none" 
-                          placeholder="How can our fiduciary team assist with your risk management and strategic advisory needs?" 
+                          placeholder="How can our team assist you today?" 
                           required
                         ></textarea>
                       </div>
