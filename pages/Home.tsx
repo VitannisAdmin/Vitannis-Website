@@ -58,7 +58,7 @@ const Home: React.FC<HomeProps> = ({ navigateTo }) => {
               onClick={() => navigateTo(Page.BUSINESS)}
             />
             <FeatureCard 
-              title="Individuals & Families"
+              title="Wealth Protection"
               description="Comprehensive market shopping for Long Term Care, Life, and Disability insurance."
               icon={<Users className="w-7 h-7" />}
               onClick={() => navigateTo(Page.INDIVIDUALS)}

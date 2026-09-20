@@ -5,8 +5,8 @@ import { sendMessageToAdvisor, ChatMessage } from '../services/geminiService';
 
 const SUGGESTED_QUERIES = [
   {
-    id: 'ltc',
-    label: 'Immediate Care Plan (Long-Term Care)',
+    id: 'immediate-care',
+    label: 'Immediate Care Plan',
     icon: HeartPulse,
     query: 'How does the Immediate Care Plan work if someone is already residing in assisted living or memory care?',
   },
@@ -17,10 +17,10 @@ const SUGGESTED_QUERIES = [
     query: 'What are the corporate tax deduction benefits of setting up a Defined Benefit Plan for business owners?',
   },
   {
-    id: 'fiduciary',
-    label: 'Fiduciary Difference',
-    icon: HelpCircle,
-    query: 'How does a fiduciary insurance advisory differ from a commission-based insurance broker?',
+    id: 'ltc-planning',
+    label: 'LTC Planning',
+    icon: ShieldCheck,
+    query: 'What are the most effective long-term care (LTC) planning strategies and asset-based LTC policies?',
   },
 ];
 
@@ -30,9 +30,9 @@ const INITIAL_MESSAGE: ChatMessage = {
   text: `Welcome to **Vitannis Questions & Advice**. 
 
 I am here to answer your questions regarding our specialized solutions, including:
-* **Immediate Care Plan**: Guaranteed lifetime income solutions for families currently paying facility or memory care expenses.
-* **Business Strategies**: Defined Benefit Plans, key person protection, and buy-sell funding.
-* **Private Client Advisory**: Independent fiduciary analysis of life insurance and wealth preservation strategies.
+* **Immediate Care Plan**
+* **Business Strategies**
+* **LTC Planning & Wealth Protection**
 
 Select a suggested prompt below or type your question in the chat box to begin.`,
   timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -126,7 +126,7 @@ const Tools: React.FC = () => {
             Questions &amp; Advice <Sparkles className="text-brand-gold w-7 h-7 md:w-8 md:h-8 animate-pulse-slow" />
           </h1>
           <p className="text-lg md:text-xl text-brand-cream/80 max-w-3xl font-light">
-            Direct, fiduciary-level intelligence on the Immediate Care Plan, business tax deductions, and wealth protection.
+            Interactive info on the Immediate Care Plan, business tax deductions, and wealth protection.
           </p>
         </div>
       </section>
@@ -150,7 +150,7 @@ const Tools: React.FC = () => {
                   </h2>
                   <div className="flex items-center gap-2 text-xs text-brand-cream/70 font-light">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    Vitannis Fiduciary AI Advisor &bull; Online
+                    Vitannis Advisory Specialist &bull; Online
                   </div>
                 </div>
               </div>
@@ -222,7 +222,7 @@ const Tools: React.FC = () => {
                       <div className="w-2 h-2 rounded-full bg-brand-gold animate-bounce [animation-delay:-0.3s]"></div>
                       <div className="w-2 h-2 rounded-full bg-brand-gold animate-bounce [animation-delay:-0.15s]"></div>
                       <div className="w-2 h-2 rounded-full bg-brand-gold animate-bounce"></div>
-                      <span className="text-xs text-gray-500 ml-2 font-light">Consulting fiduciary intelligence...</span>
+                      <span className="text-xs text-gray-500 ml-2 font-light">Consulting specialized expertise...</span>
                     </div>
                   </div>
                 </div>
@@ -286,7 +286,7 @@ const Tools: React.FC = () => {
               <div className="mt-2.5 flex items-center justify-between text-[11px] text-gray-500 font-light">
                 <span className="flex items-center gap-1">
                   <AlertCircle className="w-3 h-3 text-brand-gold shrink-0" />
-                  Educational purposes only &bull; Does not constitute binding fiduciary or legal advice.
+                  Educational purposes only &bull; Does not constitute binding legal or formal advisory recommendations.
                 </span>
                 <span className="hidden sm:inline text-gray-400">
                   Press Enter to send, Shift+Enter for newline

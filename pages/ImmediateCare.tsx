@@ -23,11 +23,14 @@ const ImmediateCare: React.FC<ImmediateCareProps> = ({ navigateTo }) => {
             <div className="inline-flex items-center gap-2 bg-brand-gold/20 text-brand-gold px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-6 border border-brand-gold/30">
               <Sparkles className="w-3 h-3" /> Exclusive Solution
             </div>
-            <h1 className="font-serif text-4xl md:text-6xl text-white font-bold mb-6 leading-tight tracking-tight">
+            <h1 className="font-serif text-4xl md:text-6xl text-white font-bold mb-4 leading-tight tracking-tight">
               The Immediate <span className="text-brand-gold italic">Care Plan</span>
             </h1>
-            <p className="text-lg md:text-xl text-brand-cream/80 mb-10 leading-relaxed font-light">
-              Cap the cost of LTC. A guaranteed financial solution designed specifically for individuals already receiving long-term care.
+            <h2 className="font-serif text-[28px] md:text-[35px] lg:text-[42px] text-brand-gold font-bold mb-6 tracking-tight">
+              Cap the Cost of Long Term Care
+            </h2>
+            <p className="text-lg md:text-xl text-brand-cream/80 mb-10 leading-relaxed font-light max-w-2xl mx-auto">
+              A guaranteed financial solution designed specifically for individuals already receiving long-term care.
             </p>
             <div className="flex flex-col md:flex-row gap-4 justify-center">
               <Button onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}>

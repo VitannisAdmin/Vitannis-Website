@@ -30,7 +30,7 @@ export const sendMessageToAdvisor = async (
         });
         if (netlifyRes.ok) {
           const netlifyData = await netlifyRes.json();
-          return netlifyData.result || "Thank you for reaching out. Please connect with our fiduciary team for customized advice.";
+          return netlifyData.result || "Thank you for reaching out. Please connect with our advisory specialists for customized guidance.";
         }
       }
       const errData = await response.json().catch(() => ({}));
@@ -41,7 +41,7 @@ export const sendMessageToAdvisor = async (
     return data.reply || "I apologize, but I could not generate a response at this time. Please try asking again or contact a Vitannis advisor.";
   } catch (error: any) {
     console.error("Advisory Chat Error:", error);
-    return "I apologize, but we are experiencing a temporary connectivity issue. Please try again in a moment, or contact our fiduciary team directly.";
+    return "I apologize, but we are experiencing a temporary connectivity issue. Please try again in a moment, or contact our advisory specialists directly.";
   }
 };
 

@@ -9,7 +9,7 @@ export default async (req, context) => {
     try {
         const body = await req.json();
         const prompt = body.message || body.prompt;
-        const systemInstruction = body.systemInstruction || "You are a fiduciary insurance advisor for Vitannis.";
+        const systemInstruction = body.systemInstruction || "You are an insurance advisory specialist representing Vitannis, providing expert guidance and specialized insurance solutions.";
         
         // Securely pull the API key from Netlify's environment variables
         const apiKey = Netlify.env.get("GEMINI_API_KEY");

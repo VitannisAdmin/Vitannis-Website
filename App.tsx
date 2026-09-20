@@ -99,7 +99,7 @@ const App: React.FC = () => {
                 <div className="bg-white text-brand-teal shadow-xl rounded-md overflow-hidden transition-all transform origin-top-left border border-gray-100 animate-fade-in">
                   <button onClick={() => { navigateTo(Page.IMMEDIATE_CARE); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors font-semibold">Immediate Care Plan</button>
                   <button onClick={() => { navigateTo(Page.BUSINESS); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors">Business Owners</button>
-                  <button onClick={() => { navigateTo(Page.INDIVIDUALS); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors">Private Clients</button>
+                  <button onClick={() => { navigateTo(Page.INDIVIDUALS); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors">Wealth Protection</button>
                   <button onClick={() => { navigateTo(Page.PARTNERS); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm hover:text-brand-gold transition-colors">Advisor Partners</button>
                 </div>
               </div>
@@ -131,7 +131,7 @@ const App: React.FC = () => {
             <div className="px-6 py-2 text-xs font-bold text-brand-gold uppercase tracking-widest opacity-70">Solutions</div>
             <button onClick={() => navigateTo(Page.IMMEDIATE_CARE)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-gold font-semibold italic">Immediate Care Plan</button>
             <button onClick={() => navigateTo(Page.BUSINESS)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-cream">Business Owners</button>
-            <button onClick={() => navigateTo(Page.INDIVIDUALS)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-cream">Private Clients</button>
+            <button onClick={() => navigateTo(Page.INDIVIDUALS)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-cream">Wealth Protection</button>
             <button onClick={() => navigateTo(Page.PARTNERS)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-cream border-b border-brand-teal/30">Advisor Partners</button>
             <button onClick={() => navigateTo(Page.TOOLS)} className="block w-full text-left px-6 py-4 hover:bg-brand-teal text-sm text-brand-cream flex items-center gap-2 border-b border-brand-teal/30"><Sparkles className="w-3 h-3 text-brand-gold" /> Q&A</button>
             <button onClick={() => navigateTo(Page.ABOUT)} className="block w-full text-left px-6 py-4 hover:bg-brand-teal text-sm text-brand-cream border-b border-brand-teal/30">About Us</button>
@@ -146,6 +146,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Home navigateTo={navigateTo} />} />
           <Route path="/business" element={<Business navigateTo={navigateTo} />} />
           <Route path="/individuals" element={<Individuals navigateTo={navigateTo} />} />
+          <Route path="/wealth-protection" element={<Individuals navigateTo={navigateTo} />} />
           <Route path="/partners" element={<Partners navigateTo={navigateTo} />} />
           <Route path="/about" element={<About navigateTo={navigateTo} />} />
           <Route path="/contact" element={<Contact navigateTo={navigateTo} />} />
@@ -175,7 +176,7 @@ const App: React.FC = () => {
               <ul className="space-y-3 text-sm text-brand-cream/80 font-light">
                 <li><button onClick={() => navigateTo(Page.HOME)} className="hover:text-white transition">Home</button></li>
                 <li><button onClick={() => navigateTo(Page.BUSINESS)} className="hover:text-white transition">Business Solutions</button></li>
-                <li><button onClick={() => navigateTo(Page.INDIVIDUALS)} className="hover:text-white transition">Private Client</button></li>
+                <li><button onClick={() => navigateTo(Page.INDIVIDUALS)} className="hover:text-white transition">Wealth Protection</button></li>
                 <li><button onClick={() => navigateTo(Page.TOOLS)} className="hover:text-white transition flex items-center gap-1"><Sparkles className="w-3 h-3" /> Q&A</button></li>
               </ul>
             </div>

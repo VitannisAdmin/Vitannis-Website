@@ -12,10 +12,10 @@ const Individuals: React.FC<Props> = ({ navigateTo }) => {
       <section className="bg-brand-teal text-white py-16 md:py-20">
         <div className="container mx-auto px-6">
           <div className="flex items-center gap-2 text-brand-gold text-sm font-bold uppercase tracking-wider mb-4">
-            <button onClick={() => navigateTo(Page.HOME)} className="hover:text-white transition">Home</button> / Solutions
+            <button onClick={() => navigateTo(Page.HOME)} className="hover:text-white transition">Home</button> / Solutions / Wealth Protection
           </div>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold mb-6">Successful Individuals & Families</h1>
-          <p className="text-xl text-brand-cream/80 max-w-3xl font-light">Objective market analysis and guidance for your most critical protection decisions.</p>
+          <h1 className="font-serif text-4xl md:text-5xl font-bold mb-6">Wealth Protection</h1>
+          <p className="text-xl text-brand-cream/80 max-w-3xl font-light">Objective analysis and guidance for your most critical protection decisions.</p>
         </div>
       </section>
 
