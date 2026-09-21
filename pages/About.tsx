@@ -50,7 +50,7 @@ const About: React.FC<Props> = ({ navigateTo }) => {
             <button onClick={() => navigateTo(Page.HOME)} className="hover:text-white transition cursor-pointer">Home</button> / Company
           </div>
           <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4">About Vitannis</h1>
-          <h2 className="text-xl md:text-2xl text-brand-cream/90 max-w-3xl font-light leading-relaxed">Delivering high-quality advice and smart insurance decisions.</h2>
+          <h2 className="text-xl md:text-2xl text-brand-cream/90 max-w-3xl font-light leading-relaxed">Delivering high-quality insurance advice.</h2>
         </div>
       </section>
 

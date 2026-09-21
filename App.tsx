@@ -13,6 +13,7 @@ import Contact from './pages/Contact';
 import Tools from './pages/Tools';
 import ImmediateCare from './pages/ImmediateCare';
 import ClientIntake from './pages/ClientIntake';
+import LTCResources from './pages/LTCResources';
 import { ObfuscatedPhone, ObfuscatedEmail } from './components/ContactLinks';
 
 const App: React.FC = () => {
@@ -33,6 +34,7 @@ const App: React.FC = () => {
     if (path === '/contact') return Page.CONTACT;
     if (path === '/insights' || path === '/qa') return Page.TOOLS;
     if (path === '/immediate-care') return Page.IMMEDIATE_CARE;
+    if (path === '/ltc-resources') return Page.LTC_RESOURCES;
     if (path === '/intake') return Page.INTAKE;
     return Page.HOME;
   };
@@ -59,6 +61,7 @@ const App: React.FC = () => {
       case Page.CONTACT: path = '/contact'; break;
       case Page.TOOLS: path = '/qa'; break;
       case Page.IMMEDIATE_CARE: path = '/immediate-care'; break;
+      case Page.LTC_RESOURCES: path = '/ltc-resources'; break;
       case Page.INTAKE: path = '/intake'; break;
     }
     navigate(path);
@@ -92,12 +95,13 @@ const App: React.FC = () => {
               <button 
                 onClick={() => setSolutionsOpen(!solutionsOpen)}
                 onMouseEnter={() => setSolutionsOpen(true)}
-                className={`text-sm font-medium transition uppercase tracking-wide flex items-center gap-1 py-2 ${[Page.BUSINESS, Page.INDIVIDUALS, Page.PARTNERS, Page.IMMEDIATE_CARE].includes(activePage) ? 'text-brand-gold' : 'text-brand-cream hover:text-brand-gold'}`}>
+                className={`text-sm font-medium transition uppercase tracking-wide flex items-center gap-1 py-2 ${[Page.BUSINESS, Page.INDIVIDUALS, Page.PARTNERS, Page.IMMEDIATE_CARE, Page.LTC_RESOURCES].includes(activePage) ? 'text-brand-gold' : 'text-brand-cream hover:text-brand-gold'}`}>
                 Solutions <ChevronDown className="w-4 h-4" />
               </button>
               <div className={`absolute left-0 top-full pt-2 w-56 z-50 ${solutionsOpen ? 'block' : 'hidden'}`}>
                 <div className="bg-white text-brand-teal shadow-xl rounded-md overflow-hidden transition-all transform origin-top-left border border-gray-100 animate-fade-in">
                   <button onClick={() => { navigateTo(Page.IMMEDIATE_CARE); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors font-semibold">Immediate Care Plan</button>
+                  <button onClick={() => { navigateTo(Page.LTC_RESOURCES); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors font-semibold">LTC Resources</button>
                   <button onClick={() => { navigateTo(Page.BUSINESS); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors">Business Owners</button>
                   <button onClick={() => { navigateTo(Page.INDIVIDUALS); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm border-b border-gray-100 hover:text-brand-gold transition-colors">Wealth Protection</button>
                   <button onClick={() => { navigateTo(Page.PARTNERS); setSolutionsOpen(false); }} className="block w-full text-left px-4 py-3 hover:bg-brand-cream-light text-sm hover:text-brand-gold transition-colors">Advisor Partners</button>
@@ -130,6 +134,7 @@ const App: React.FC = () => {
             <button onClick={() => navigateTo(Page.HOME)} className="block w-full text-left px-6 py-4 hover:bg-brand-teal text-sm text-brand-cream border-b border-brand-teal/30">Home</button>
             <div className="px-6 py-2 text-xs font-bold text-brand-gold uppercase tracking-widest opacity-70">Solutions</div>
             <button onClick={() => navigateTo(Page.IMMEDIATE_CARE)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-gold font-semibold italic">Immediate Care Plan</button>
+            <button onClick={() => navigateTo(Page.LTC_RESOURCES)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-gold font-medium">LTC Resources</button>
             <button onClick={() => navigateTo(Page.BUSINESS)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-cream">Business Owners</button>
             <button onClick={() => navigateTo(Page.INDIVIDUALS)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-cream">Wealth Protection</button>
             <button onClick={() => navigateTo(Page.PARTNERS)} className="block w-full text-left pl-10 pr-6 py-3 hover:bg-brand-teal text-sm text-brand-cream border-b border-brand-teal/30">Advisor Partners</button>
@@ -153,6 +158,7 @@ const App: React.FC = () => {
           <Route path="/insights" element={<Tools />} />
           <Route path="/qa" element={<Tools />} />
           <Route path="/immediate-care" element={<ImmediateCare navigateTo={navigateTo} />} />
+          <Route path="/ltc-resources" element={<LTCResources navigateTo={navigateTo} />} />
           <Route path="/intake" element={<ClientIntake navigateTo={navigateTo} />} />
           <Route path="*" element={<Home navigateTo={navigateTo} />} />
         </Routes>
@@ -177,6 +183,7 @@ const App: React.FC = () => {
                 <li><button onClick={() => navigateTo(Page.HOME)} className="hover:text-white transition">Home</button></li>
                 <li><button onClick={() => navigateTo(Page.BUSINESS)} className="hover:text-white transition">Business Solutions</button></li>
                 <li><button onClick={() => navigateTo(Page.INDIVIDUALS)} className="hover:text-white transition">Wealth Protection</button></li>
+                <li><button onClick={() => navigateTo(Page.LTC_RESOURCES)} className="hover:text-white transition">LTC Resources</button></li>
                 <li><button onClick={() => navigateTo(Page.TOOLS)} className="hover:text-white transition flex items-center gap-1"><Sparkles className="w-3 h-3" /> Q&A</button></li>
               </ul>
             </div>

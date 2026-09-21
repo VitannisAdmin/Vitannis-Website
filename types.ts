@@ -8,6 +8,7 @@ export enum Page {
   CONTACT = 'contact',
   IMMEDIATE_CARE = 'immediate-care',
   INTAKE = 'intake',
+  LTC_RESOURCES = 'ltc-resources',
 }
 
 export interface NavItem {
